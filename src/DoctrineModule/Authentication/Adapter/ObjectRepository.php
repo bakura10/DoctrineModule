@@ -149,7 +149,7 @@ class ObjectRepository extends AbstractAdapter
     protected function validateIdentity($identity)
     {
         $credentialProperty = $this->options->getCredentialProperty();
-        $getter = 'get' . ucfirst($credentialProperty);
+        $getter             = 'get' . ucfirst($credentialProperty);
         $documentCredential = null;
 
         if (method_exists($identity, $getter)) {
@@ -168,14 +168,14 @@ class ObjectRepository extends AbstractAdapter
             );
         }
 
-        $credentialValue = $this->credential;
-        $callable = $this->options->getCredentialCallable();
+        $credentialValue = (string) $this->credential;
+        $callable        = $this->options->getCredentialCallable();
 
         if ($callable) {
             $credentialValue = call_user_func($callable, $identity, $credentialValue);
         }
 
-        if ($credentialValue !== true && $credentialValue != $documentCredential) {
+        if ($credentialValue !== true && $credentialValue !== $documentCredential) {
             $this->authenticationResultInfo['code'] = AuthenticationResult::FAILURE_CREDENTIAL_INVALID;
             $this->authenticationResultInfo['messages'][] = 'Supplied credential is invalid.';
 
